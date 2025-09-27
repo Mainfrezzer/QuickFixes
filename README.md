@@ -28,3 +28,21 @@ The quick and easy way to achive that is by doing the following
 </pre>
 
 And thats it. When the Master is down, the Backup will deploy both ipv6 and ipv4 of the Master as virtual IP without complaining or throwing a fuss.
+
+## Disable Turbo in software
+
+Ive encountered an odd behavior when disabling the turbo on intel CPUs via
+<pre>
+    echo "1" | sudo tee /sys/devices/system/cpu/intel_pstate/no_turbo
+</pre>
+
+When you try to re-activate the turbo within like 5 minutes, it works as expected. When you keep it running for longer, for some reason, the maximum frequency will be stuck to non-turbo mode
+
+To fix it, apply the maximum turbo boost via 
+
+<pre>
+    echo "0" | sudo tee /sys/devices/system/cpu/intel_pstate/no_turbo
+    echo 4700000 | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_max_freq
+</pre>
+
+the 4700000 in this case, is the maximum boost frequency of my i3-14100, so you need to check what yours is.
