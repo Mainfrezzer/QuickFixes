@@ -29,7 +29,7 @@ The quick and easy way to achive that is by doing the following
 
 And thats it. When the Master is down, the Backup will deploy both ipv6 and ipv4 of the Master as virtual IP without complaining or throwing a fuss.
 
-## Disable Turbo in software
+## Disable Turbo in Software
 
 Ive encountered an odd behavior when disabling the turbo on intel CPUs via
 <pre>
