@@ -46,3 +46,29 @@ To fix it, apply the maximum turbo boost via
 </pre>
 
 the 4700000 in this case, is the maximum boost frequency of my i3-14100, so you need to check what yours is.
+
+## NGINX Proxy Manager
+Fix cert renew not working after moving the folder structure.
+
+Based upon this https://www.reddit.com/r/nginxproxymanager/comments/160ig9d/comment/lsc90x8/
+
+Execute within the container at /etc/letsencrypt
+<pre>
+cert_fix() { 
+   archive=${1/live/archive}
+   archive=${archive/.pem/*.pem}
+   archive=$(find $archive -type f | tail -n 1)
+   if [ -z "$archive" ]; then
+      echo "Cannot find valid $1 in archive"
+   else
+      new_file="$1"
+      archive="../../$archive"
+      echo "Creating link for $new_file -> $archive"
+      cp -f "$1" "$1.bak"               
+      rm -f "$1"                        
+      ln -sf "$archive" "$new_file"    
+   fi
+}
+export -f cert_fix
+find live/*/*.pem -type f -xtype f -exec bash -c 'cert_fix "$0"' {} \;
+</pre>
